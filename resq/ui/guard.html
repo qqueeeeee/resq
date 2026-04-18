@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>resq guard</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --border: #2e2e2e;
+      --accent: #7c6aff;
+      --accent2: #a594ff;
+      --text: #e8e8e8;
+      --muted: #888888;
+      --success: #4ade80;
+      --danger: #f87171;
+      --font: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 12px;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: linear-gradient(180deg, var(--surface), #171717);
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px 14px;
+      align-items: center;
+      box-shadow: 0 18px 35px rgba(0, 0, 0, .32);
+    }
+
+    h1 {
+      margin: 0 0 5px;
+      font-size: 16px;
+      line-height: 1.2;
+    }
+
+    .res {
+      margin: 0;
+      color: var(--accent2);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .count {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      grid-column: 1 / -1;
+    }
+
+    button {
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      color: var(--text);
+      padding: 0 14px;
+      font: 600 13px var(--font);
+      cursor: pointer;
+    }
+
+    button.danger {
+      border-color: rgba(248, 113, 113, .45);
+      background: rgba(248, 113, 113, .16);
+      color: #ffd7d7;
+    }
+  </style>
+</head>
+<body>
+  <section class="card">
+    <div>
+      <h1>risky resolution detected</h1>
+      <p id="res" class="res">checking...</p>
+    </div>
+    <div id="count" class="count">reverting soon...</div>
+    <div class="actions">
+      <button id="keep">keep</button>
+      <button id="revert" class="danger">revert now</button>
+    </div>
+  </section>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const res = params.get('res') || 'unknown mode';
+    let left = Number(params.get('timeout') || 10);
+
+    const resEl = document.querySelector('#res');
+    const countEl = document.querySelector('#count');
+    const keepBtn = document.querySelector('#keep');
+    const revertBtn = document.querySelector('#revert');
+
+    resEl.textContent = res;
+
+    function paint() {
+      countEl.textContent = `reverting in ${left}s...`;
+    }
+
+    async function call(name) {
+      try {
+        await window.pywebview.api[name]();
+      } catch (_) {
+      }
+    }
+
+    keepBtn.addEventListener('click', () => call('keep'));
+    revertBtn.addEventListener('click', () => call('revert_now'));
+
+    paint();
+    const timer = setInterval(() => {
+      left -= 1;
+      paint();
+      if (left <= 0) {
+        clearInterval(timer);
+        call('revert_now');
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+    "safe_resolution": {
+        "width": 1920,
+        "height": 1080,
+        "refresh": 144,
+        "label": "Safe",
+        "is_safe": true
+    },
+    "presets": [
+        {
+            "width": 1728,
+            "height": 1080,
+            "refresh": 144,
+            "label": "Ultrawide"
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 144,
+            "label": "144Hz"
+        },
+        {
+            "width": 1280,
+            "height": 720,
+            "refresh": 60,
+            "label": "720p"
+        }
+    ],
+    "hotkeys": {
+        "safe": "win+alt+r",
+        "preset1": "win+alt+1",
+        "preset2": "win+alt+2",
+        "preset3": "win+alt+3",
+        "settings": "win+alt+c"
+    },
+    "safe_boot_guard": true,
+    "safe_boot_timeout": 10,
+    "minimize_to_tray": false
+}

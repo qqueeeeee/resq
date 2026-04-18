@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>resq settings</title>
+  <script>
+    document.documentElement.dataset.theme = localStorage.getItem('resq-theme') || 'light';
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loader" class="loader">
+    <p>loading...</p>
+  </div>
+
+  <main class="app">
+    <header class="title-strip">
+      <span>resq</span>
+    </header>
+
+    <section class="card status-card">
+      <p class="section-kicker">current status</p>
+      <div class="status-line">
+        <div id="current-mode" class="current-mode">waiting for bridge</div>
+        <span id="risk-badge" class="badge unmarked">unmarked</span>
+      </div>
+      <div class="status-actions">
+        <button id="apply-safe" class="btn primary">apply safe</button>
+        <button id="revert" class="btn">revert</button>
+      </div>
+    </section>
+
+    <section class="card safe-card">
+      <div class="section-head">
+        <p class="section-kicker">safe fallback</p>
+        <span id="safe-msg" class="msg"></span>
+      </div>
+      <div class="safe-row">
+        <label for="safe-mode">safe mode</label>
+        <select id="safe-mode"></select>
+        <button id="use-current" class="btn">use current</button>
+        <button id="apply-selected-safe" class="btn primary">apply</button>
+      </div>
+    </section>
+
+    <section class="card presets-card">
+      <div class="section-head">
+        <p class="section-kicker">presets</p>
+        <span id="preset-msg" class="msg"></span>
+      </div>
+      <div id="preset-list" class="preset-list"></div>
+    </section>
+
+    <section class="hotkeys-section">
+      <div class="section-head">
+        <p class="section-kicker">hotkeys</p>
+        <span id="hotkey-msg" class="msg"></span>
+      </div>
+      <div id="hotkey-list" class="hotkey-list"></div>
+      <p class="hint small-hint">changes take effect after restarting resq</p>
+    </section>
+
+    <section class="guard-section">
+      <div class="section-head">
+        <p class="section-kicker">startup guard</p>
+        <span id="guard-msg" class="msg"></span>
+      </div>
+      <div class="guard-row">
+        <span>startup guard</span>
+        <button id="guard-toggle" class="toggle guard-toggle-btn" aria-label="toggle startup guard"></button>
+      </div>
+      <div class="guard-row slider-row">
+        <span>revert after</span>
+        <input id="countdown" type="range" min="5" max="30" step="1">
+        <strong><span id="countdown-value">10</span>s</strong>
+      </div>
+      <p class="hint">only presets marked risky trigger auto-revert on startup</p>
+    </section>
+
+    <section class="launch-section">
+      <div class="section-head">
+        <p class="section-kicker">launch settings</p>
+        <span id="launch-msg" class="msg"></span>
+      </div>
+      <div class="launch-row">
+        <span>run on startup</span>
+        <button id="run-startup" class="toggle guard-toggle-btn" aria-label="toggle run on startup"></button>
+      </div>
+      <div class="launch-row">
+        <span>minimize to tray on close</span>
+        <button id="minimize-tray" class="toggle guard-toggle-btn" aria-label="toggle minimize to tray"></button>
+      </div>
+      <p class="hint small-hint">run on startup launches resq with windows using pythonw</p>
+    </section>
+
+    <footer class="footer-line">resq v0.1.0</footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
